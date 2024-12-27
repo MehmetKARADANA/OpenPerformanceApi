@@ -1,0 +1,97 @@
+/*
+func validateToken(c *gin.Context) bool {
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
+		return false
+	}
+	token := strings.TrimPrefix(authHeader, "Bearer ")
+	//fmt.Println("Gelen Token: ", token)
+
+	// Token'ı doğrulayan dış servise istek gönder
+	return validateTokenWithAuthService(token)
+}
+
+
+// Dış token doğrulama servisine istek gönderen fonksiyon
+func validateTokenWithAuthService(token string) bool {
+	url := "http://localhost:8084/api/auth/authenticate" // Auth servisi URL'si
+
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return false
+	}
+
+	// Bearer token'ı header'a ekle
+	req.Header.Add("Authorization", "Bearer "+token)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return false
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusOK {
+		return true
+	}
+	fmt.Println("invalid token: ", resp.StatusCode)
+	return false
+}
+
+func getRooms(c *gin.Context) {
+	if !validateToken(c) {
+		c.JSON(http.StatusUnauthorized, gin.H{"error 2": "invalid token"})
+		return
+	}
+
+	var wg sync.WaitGroup
+	results := make(chan map[string]interface{}, len(serverConfig.Agencies))
+
+	// Paralel istekler gönderiliyor
+	for _, agency := range serverConfig.Agencies {
+		wg.Add(1)
+		go func(agency Agency) {
+			defer wg.Done()
+			jsonData, err := fetchJSON(agency.URL + "/rooms")
+			if err != nil {
+				log.Printf("Error with agency %s: %v", agency.Name, err)
+				results <- map[string]interface{}{
+					"agency":      agency.Name,
+					"distance_km": agency.DistanceKM,
+					"error":       err.Error(), // Hata bilgisi gönderiliyor
+				}
+				return
+			}
+			results <- map[string]interface{}{
+				"agency":      agency.Name,
+				"distance_km": agency.DistanceKM,
+				"data":        jsonData,
+			}
+		}(agency)
+	}
+
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	var allResults []map[string]interface{}
+	for result := range results {
+		allResults = append(allResults, result)
+	}
+
+	c.JSON(http.StatusOK, allResults)
+}
+
+
+// testtt Task 2 endpoint'i
+func task2(c *gin.Context) {
+	if !validateToken(c) {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid token"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Task 2 başarıyla gerçekleştirildi"})
+}
+*/

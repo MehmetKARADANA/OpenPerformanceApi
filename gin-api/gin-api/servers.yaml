@@ -1,0 +1,22 @@
+servers:
+  - name: "Istanbul Agency"
+    url: "http://host.docker.internal:3007"
+    distance_km: 10
+  - name: "Paris Agency"
+    url: "http://host.docker.internal:3001"
+    distance_km: 2005
+  - name: "New York Agency"
+    url: "http://host.docker.internal:3002"
+    distance_km: 8000
+  - name: "Tokyo Agency"
+    url: "http://host.docker.internal:3003"
+    distance_km: 9000
+  - name: "Sydney Agency"
+    url: "http://host.docker.internal:3004"
+    distance_km: 15000
+  - name: "Moscow Agency"
+    url: "http://host.docker.internal:3005"
+    distance_km: 3000
+  - name: "Cape Town Agency"
+    url: "http://host.docker.internal:3006"
+    distance_km: 8000
